@@ -27,6 +27,14 @@ void find_pass(char name[], char data[][50], char val[]) {
 	char current_pass[50] = {0};
 	int finding_name = 1;
 	for(int i = 0; strcmp(data[i], "") > 0; i++) {
+		finding_name = 1;
+		name_end = 0;
+		for(int j = 0; current_name[j] != 0; j++){
+			current_name[j] = 0;
+		}
+		for(int j = 0; current_pass[j] != 0; j++){
+			current_pass[j] = 0;
+		}
 		for(int currc = 0; data[i][currc] != 0; currc++) {
 			if(data[i][currc] == ' ') {
 				if(strcmp(current_name, name) == 0){
@@ -40,14 +48,6 @@ void find_pass(char name[], char data[][50], char val[]) {
 			else {
 				current_pass[currc-name_end] = data[i][currc];
 			}
-		}
-		finding_name = 1;
-		name_end = 0;
-		for(int j = 0; current_name[j] != 0; j++){
-			current_name[j] = 0;
-		}
-		for(int j = 0; current_pass[j] != 0; j++){
-			current_name[j] = 0;
 		}
 	}
 			
@@ -93,12 +93,12 @@ int main(int argc, char *argv[]){
 		} else {
 			pass_name = argv[2];
 		}
-		char pass_val[50] = {0};
+		char* pass_val = malloc(50);
 		if(argc < 4) {
 			printf("New password: ");
 			scanf("%s", pass_val); 
 		} else {
-			pass_name = argv[3];
+			pass_val = argv[3];
 		}
 		
 		
