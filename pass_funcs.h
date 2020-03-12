@@ -3,7 +3,7 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
-char symbols[] = { '>', '<', '!', '@', '#', '$', '%', '^', '&', '*', '/', '?', '_', '+', '-', '='};
+char symbols[] = { '>', '<', '!', '@', '#', '$', '%', '^', '&', '*', '/', '?', '_', '+', '-', '=', '\0'};
 char numbers[] = {'1', '2', '3', '4' , '5', '6', '7', '8', '9', '0'};
 char alphabet[100] = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
 int hasNum, hasSym , hasLet;
