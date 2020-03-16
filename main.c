@@ -32,14 +32,14 @@ int find_pass(char name[], char data[][50], char val[]) {
 		for(int j = 0; current_name[j] != 0; j++){
 			current_name[j] = 0;
 		}
-		for(int j = 0; current_pass[j] != 0; j++){
-			current_pass[j] = 0;
-		}
 		for(int currc = 0; data[i][currc] != 0; currc++) {
 			if(data[i][currc] == ' ') {
 				if(strcmp(current_name, name) == 0){
 					finding_name = 0;
-					name_end = currc+1;
+					name_end = currc+1;		
+					for(int j = 0; current_pass[j] != 0; j++){
+						current_pass[j] = 0;
+					}
 				}
 			}
 			else if(finding_name) {
@@ -107,7 +107,7 @@ int main(int argc, char *argv[]){
 		if(ret == 1) {
 			printf("You don't have that password!");
 		}
-		printf(pass_val);	
+		puts(pass_val);	
 	}
 	if(strcmp(command, "set") == 0) {
 		if(argc < 3) {
@@ -140,8 +140,8 @@ int main(int argc, char *argv[]){
 		int   size = 0;
 		char* syms = malloc(50);
 		if(argc < 3) {
+			printf("Size: "); 
 			scanf("%d", &size);
-			//printf("Size: %d", size); 
 		} else {
 			size = atoi(argv[2]);
 		}
