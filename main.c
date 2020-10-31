@@ -23,6 +23,16 @@ int read_data(char** data, char* filename) {
 	fclose(fp);
 }
 
+
+int write_data(char** data, char* filename) {
+	FILE* fp = fopen(filename, "w");
+	for(int i = 0; strcmp("", data[i]) != 0; i++){
+		fputs(data[i], fp);
+		fputs("\n", fp);
+	}
+	fclose(fp);
+}
+
 int get_pass(char* name, char* pass, char** data){
 	/* return condition */
 	int was_gotten = 0;
@@ -40,6 +50,33 @@ int get_pass(char* name, char* pass, char** data){
 		
 		if(strcmp(temp_name, name) == 0){
 			strcpy(pass, data[i]+j+1);
+			was_gotten = 1;
+		}
+		
+		data[i][j] = t;
+		
+		free(temp_name);
+	}
+	
+	return was_gotten;
+}
+int set_pass(char* name, char* pass, char** data){
+	/* return condition */
+	int was_gotten = 0;
+	
+	/* go through every line, set pass if we have the right name */
+	for(int i = 0; strcmp("", data[i]) != 0; i++){
+		int j = 0;
+		for(; data[i][j] != 0 && data[i][j] != ' '; j++);
+		STRING(temp_name);
+		char t = data[i][j];
+		
+		data[i][j] = 0;
+		strcpy(temp_name, data[i]);
+		
+		
+		if(strcmp(temp_name, name) == 0){
+			strcpy(data[i]+j+1, pass);
 			was_gotten = 1;
 		}
 		
@@ -88,5 +125,23 @@ int main(int argc, char** argv){
 			return 0;
 		}
 		printf("%s\n", pass);
+	} else if(strcmp(command, "set") == 0){
+		/* get name of password */
+		if(argc < 4){
+			printf("I need a name and a new password!\n");
+			return 1;
+		}
+		STRING(name);
+		STRING(pass);
+		strcpy(name, argv[2]);
+		strcpy(pass, argv[3]);
+		
+		read_data(data, "pass.txt");
+		
+		if(!set_pass(name, pass, data)){
+			printf("no such password!\n");
+			return 1;
+		}
+		write_data(data, "pass.txt");
 	}
 }
