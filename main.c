@@ -33,60 +33,6 @@ int write_data(char** data, char* filename) {
 	fclose(fp);
 }
 
-int get_pass(char* name, char* pass, char** data){
-	/* return condition */
-	int was_gotten = 0;
-	
-	/* go through every line, set pass if we have the right name */
-	for(int i = 0; strcmp("", data[i]) != 0; i++){
-		int j = 0;
-		for(; data[i][j] != 0 && data[i][j] != ' '; j++);
-		STRING(temp_name);
-		char t = data[i][j];
-		
-		data[i][j] = 0;
-		strcpy(temp_name, data[i]);
-		
-		
-		if(strcmp(temp_name, name) == 0){
-			strcpy(pass, data[i]+j+1);
-			was_gotten = 1;
-		}
-		
-		data[i][j] = t;
-		
-		free(temp_name);
-	}
-	
-	return was_gotten;
-}
-int set_pass(char* name, char* pass, char** data){
-	/* return condition */
-	int was_gotten = 0;
-	
-	/* go through every line, set pass if we have the right name */
-	for(int i = 0; strcmp("", data[i]) != 0; i++){
-		int j = 0;
-		for(; data[i][j] != 0 && data[i][j] != ' '; j++);
-		STRING(temp_name);
-		char t = data[i][j];
-		
-		data[i][j] = 0;
-		strcpy(temp_name, data[i]);
-		
-		
-		if(strcmp(temp_name, name) == 0){
-			strcpy(data[i]+j+1, pass);
-			was_gotten = 1;
-		}
-		
-		data[i][j] = t;
-		
-		free(temp_name);
-	}
-	
-	return was_gotten;
-}
 
 int main(int argc, char** argv){
 	/* set up data */
@@ -142,6 +88,31 @@ int main(int argc, char** argv){
 			printf("no such password!\n");
 			return 1;
 		}
+		write_data(data, "pass.txt");
+	} else if(strcmp(command, "add") == 0){
+		/* get name of password */
+		if(argc < 3){
+			printf("I need a name\n");
+			return 1;
+		}
+		STRING(name);
+		strcpy(name, argv[2]);
+		STRING(pass);
+		settings s;
+		s.min_length = 8;
+		s.max_length = 20;
+		s.use_upper = 1;
+		s.use_alpha = 1;
+		s.use_nums = 1;
+		s.symbols = malloc(strlen("!@#$%^&*(()|\\:;,.<>/?"));
+		strcpy(s.symbols, "!@#$%^&*(()|\\:;,.<>/?");
+		read_data(data, "pass.txt");
+		
+		if(!new_pass(pass, s)){
+			printf("no such password!\n");
+			return 1;
+		}
+		add_pass(name, pass, data);
 		write_data(data, "pass.txt");
 	}
 }
